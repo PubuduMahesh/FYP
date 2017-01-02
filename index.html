@@ -76,6 +76,28 @@
         }
 
     </style>
+
+	<style>
+
+		.bar{
+			fill: steelblue;
+		}
+
+		.bar:hover{
+			fill: brown;
+		}
+
+		.axis {
+			font: 10px sans-serif;
+		}
+
+		.axis path,
+		.axis line {
+			fill: none;
+			stroke: #000;
+			shape-rendering: crispEdges;
+		}
+	</style>
 	<body class="no-skin">
 		<div id="navbar" class="navbar navbar-default          ace-save-state">
 			<div class="navbar-container ace-save-state" id="navbar-container">
@@ -773,7 +795,7 @@
 
                                     var xy_chart = d3_xy_chart()
                                         .width(600)
-                                        .height(300)
+                                        .height(500)
                                         .xlabel("Month")
                                         .ylabel("Category") ;
 
@@ -781,10 +803,10 @@
                                     var svg = d3.select("body").append("svg")
                                         .datum(data)
                                         .call(xy_chart) ;
-                                    $("svg").css({top: 150, left: 20, position:'absolute'});
+                                    $("svg").css({top:150, left:100, position:'absolute'});
                                     function d3_xy_chart() {
-                                        var width = 640,
-                                            height = 480,
+                                        var width  = 1500,
+                                            height = 300,
                                             xlabel = "Month",
                                             ylabel = "Category" ;
 
@@ -793,7 +815,7 @@
                                                 //
                                                 // Create the plot.
                                                 //
-                                                var margin = {top: 20, right: 80, bottom: 30, left: 50},
+                                                var margin = {top: 260, right:0, bottom: 0, left:40},
                                                     innerwidth = width - margin.left - margin.right,
                                                     innerheight = height - margin.top - margin.bottom ;
 
@@ -803,7 +825,7 @@
                                                         d3.max(datasets, function(d) { return d3.max(d.x); }) ]) ;
 
                                                 var y_scale = d3.scale.linear()
-                                                    .range([innerheight, 0])
+                                                   .range([innerheight, 0])
                                                     .domain([ d3.min(datasets, function(d) { return d3.min(d.y); }),
                                                         d3.max(datasets, function(d) { return d3.max(d.y); }) ]) ;
 
@@ -928,10 +950,86 @@
                                 })
 							</script>
 						</div><!--/.canvas for name vs category graph-->
-                        <div>
-                            <!--second graph-->
-                        </div>
+						<div>
+							<script>
+                                // set the dimensions of the canvas
+                                var margin = {top: 20, right: 20, bottom: 70, left: 40},
+                                    width = 600 - margin.left - margin.right,
+                                    height = 300 - margin.top - margin.bottom;
 
+
+                                // set the ranges
+                                var x = d3.scale.ordinal().rangeRoundBands([0, width], .05);
+                                var y = d3.scale.linear().range([height, 0]);
+
+                                // define the axis
+                                var xAxis = d3.svg.axis()
+                                    .scale(x)
+                                    .orient("bottom")
+
+
+                                var yAxis = d3.svg.axis()
+                                    .scale(y)
+                                    .orient("left")
+                                    .ticks(10);
+
+
+                                // add the SVG element
+                                var svg = d3.select("body").append("svg")
+                                    .attr("width", width + margin.left + margin.right)
+                                    .attr("height", height + margin.top + margin.bottom)
+                                    .append("g")
+                                    .attr("transform","translate(" + margin.left + "," + margin.top + ")");
+
+
+
+                                // load the data
+                                d3.json("BarChartWithString.json", function(error, data) {
+
+                                    data.forEach(function(d) {
+                                        d.Name = d.Name;
+                                        d.Category = +d.Category;
+                                    });
+
+                                    // scale the range of the data
+                                    x.domain(data.map(function(d) { return d.Name; }));
+                                    y.domain([0, d3.max(data, function(d) { return d.Category; })]);
+
+                                    // add axis
+                                    svg.append("g")
+                                        .attr("class", "x axis")
+                                        .attr("transform", "translate(0," + height + ")")
+                                        .call(xAxis)
+                                        .selectAll("text")
+                                        .style("text-anchor", "end")
+                                        .attr("dx", "-.8em")
+                                        .attr("dy", "-.55em")
+                                        .attr("transform", "rotate(-90)" )
+                                        .text("Name")
+
+                                    svg.append("g")
+                                        .attr("class", "y axis")
+                                        .call(yAxis)
+                                        .append("text")
+                                        .attr("transform", "rotate(-90)")
+                                        .attr("y", 5)
+                                        .attr("dy", ".71em")
+                                        .style("text-anchor", "end")
+                                        .text("Category");
+
+
+                                    // Add bar chart
+                                    svg.selectAll("bar")
+                                        .data(data)
+                                        .enter().append("rect")
+                                        .attr("class", "bar")
+                                        .attr("x", function(d) { return x(d.Name); })
+                                        .attr("width", x.rangeBand())
+                                        .attr("y", function(d) { return y(d.Category); })
+                                        .attr("height", function(d) { return height - y(d.Category); });
+                                });
+							</script>
+						</div><!--name vs category-->
 					</div><!-- /.page-content -->
 				</div>
 			</div><!-- /.main-content -->
