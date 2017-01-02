@@ -772,8 +772,8 @@
                                     var data = jsonData;
 
                                     var xy_chart = d3_xy_chart()
-                                        .width(960)
-                                        .height(500)
+                                        .width(600)
+                                        .height(300)
                                         .xlabel("Month")
                                         .ylabel("Category") ;
 
@@ -781,6 +781,7 @@
                                     var svg = d3.select("body").append("svg")
                                         .datum(data)
                                         .call(xy_chart) ;
+                                    $("svg").css({top: 150, left: 20, position:'absolute'});
                                     function d3_xy_chart() {
                                         var width = 640,
                                             height = 480,
@@ -927,6 +928,9 @@
                                 })
 							</script>
 						</div><!--/.canvas for name vs category graph-->
+                        <div>
+                            <!--second graph-->
+                        </div>
 
 					</div><!-- /.page-content -->
 				</div>
