@@ -734,56 +734,8 @@
 								</small>
 							</h1>
 						</div><!-- /.page-header -->
+							
 
-						<div class="row">
-							<div class="col-xs-12">
-									<div>
-										<script>
-                                            d3.json("category.json", function(data){
-                                                console.log(data)
-                                                var canvas = d3.select("body").append("svg")
-                                                    .attr("width",500)
-                                                    .attr("height",500)
-													.attr("x",0)
-													.attr("y",0)
-
-												circle = canvas.append("circle")
-													.attr("cx",250)
-													.attr("cy",250)
-													.attr("r",50);
-
-                                                canvas.selectAll("rect")
-                                                    .data(data)
-                                                    .enter()
-                                                    .append("rect")
-                                                    .attr("width",function(d){ return d.age * 10; })
-                                                    .attr("height",48)
-                                                    .attr("y",function(d,i){return i* 50; })
-                                                    .attr("fill","blue");
-
-                                                canvas.selectAll("text")
-                                                    .data(data)
-                                                    .enter()
-                                                    .append("text")
-                                                    .attr("fill","white")
-                                                    .attr("y",function(d,i){return i*50 + 24})
-                                                    .text(function (d){return d.name})
-                                            })
-										</script>
-									</div>
-
-									<div class="vspace-12-sm"></div>
-									</div><!-- /.col -->
-								</div><!-- /.row -->
-
-								<div class="hr hr32 hr-dotted"></div>
-									pubudu mahesh meththanada
-
-								<div class="hr hr32 hr-dotted"></div>
-
-								<!-- PAGE CONTENT ENDS -->
-							</div><!-- /.col -->
-						</div><!-- /.row -->
 					</div><!-- /.page-content -->
 				</div>
 			</div><!-- /.main-content -->
