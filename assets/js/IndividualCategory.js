@@ -17,7 +17,6 @@ d3.json('category.json',function(error,jsonData){
         .call(xy_chart)
         .attr("width",800)
         .attr("height",800);
-    $("svg").css({top:150, left:100, position:'absolute'});
     function d3_xy_chart() {
         var width  = 350,
             height = 350,
